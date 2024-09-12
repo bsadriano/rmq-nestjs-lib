@@ -1,4 +1,4 @@
-export class AuctionFinished {
+export class AuctionFinishedDto {
   id: number;
   itemSold: boolean;
   winner: string;

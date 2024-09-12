@@ -1,4 +1,4 @@
-export class AuctionBidPlaced {
+export class AuctionBidPlacedDto {
   id: number;
   currentHighBid: number;
   amount: number;
