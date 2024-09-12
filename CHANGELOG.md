@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.1.2
+
+### Patch Changes
+
+- 8d0eff5: Add more common queue dto
+
 ## 0.1.1
 
 ### Patch Changes
