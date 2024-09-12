@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.0.4
+
+### Patch Changes
+
+- 8918012: Add shared lib
+
 ## 0.0.3
 
 ### Patch Changes
