@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.1.3
+
+### Patch Changes
+
+- 1b8ea59: Rename dtos
+
 ## 0.1.2
 
 ### Patch Changes
