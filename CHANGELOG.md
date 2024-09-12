@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.0.5
+
+### Patch Changes
+
+- 3b4a4bc: Add lib
+
 ## 0.0.4
 
 ### Patch Changes
