@@ -23,6 +23,7 @@ export class RmqModule {
                 queue: configService.get<string>(`rmq.${queue}_queue`),
               },
             }),
+            inject: [ConfigService],
           },
         ]),
       ],
