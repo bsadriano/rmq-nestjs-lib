@@ -12,6 +12,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "release": "pnpm run build && changeset publish",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
