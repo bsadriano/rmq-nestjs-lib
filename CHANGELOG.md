@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.1.0
+
+### Minor Changes
+
+- 2dc5d5e: Add more for queue and util
+
 ## 0.0.6
 
 ### Patch Changes
