@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.1.1
+
+### Patch Changes
+
+- 4fce1c8: Add more for database
+
 ## 0.1.0
 
 ### Minor Changes
