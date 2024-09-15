@@ -5,7 +5,7 @@ export const CurrentUser = createParamDecorator(
     if (ctx.getType() === 'http') {
       return ctx.switchToHttp().getRequest().user;
     }
-    if (ctx.getType() === 'rpc') {
+    if (['rpc', 'rmq'].includes(ctx.getType())) {
       return ctx.switchToRpc().getData().user;
     }
   },

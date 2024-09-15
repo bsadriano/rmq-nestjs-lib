@@ -1,33 +1,31 @@
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { RmqModuleOptions } from './interfaces';
-import { RmqService } from './rmq.service';
 
-@Module({
-  providers: [RmqService],
-  exports: [RmqService],
-})
+interface RmqModuleOptions {
+  exchanges: {
+    name: string;
+    type: string;
+  }[];
+}
+
+@Module({})
 export class RmqModule {
-  static register({ name, queue }: RmqModuleOptions): DynamicModule {
+  static register({ exchanges }: RmqModuleOptions): DynamicModule {
     return {
       module: RmqModule,
       imports: [
-        ClientsModule.registerAsync([
-          {
-            name: `${name}`,
-            useFactory: (configService: ConfigService) => ({
-              transport: Transport.RMQ,
-              options: {
-                urls: [configService.get<string>('rmq.uri')!],
-                queue: configService.get<string>(`rmq.${queue}_queue`),
-              },
-            }),
-            inject: [ConfigService],
-          },
-        ]),
+        RabbitMQModule.forRootAsync(RabbitMQModule, {
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            exchanges,
+            uri: configService.get<string>('rmq.uri'),
+            connectionInitOptions: { wait: false },
+            enableControllerDiscovery: false,
+          }),
+        }),
       ],
-      exports: [ClientsModule],
+      exports: [RabbitMQModule],
     };
   }
 }

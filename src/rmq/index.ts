@@ -1,3 +1,2 @@
-export * from './interfaces';
+export * from './rmq-message.decorator';
 export * from './rmq.module';
-export * from './rmq.service';

@@ -1,46 +1,48 @@
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ClientProxy } from '@nestjs/microservices';
 import { Request } from 'express';
-import { catchError, Observable, tap, timeout } from 'rxjs';
-import { AUTH_SERVICE } from './services';
+import { AUTH_EXCHANGE, AUTH_VALIDATE_USER_ROUTING_KEY } from './services';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(@Inject(AUTH_SERVICE) private authClient: ClientProxy) {}
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const authentication = this.getAuthentication(context);
-    return this.authClient
-      .send('validate-user', {
-        Authentication: authentication,
-      })
-      .pipe(
-        tap((res) => {
-          if (res.error) {
-            throw new UnauthorizedException();
-          }
+  constructor(private readonly amqpConnection: AmqpConnection) {}
 
-          this.addUser(res, context);
-        }),
-        timeout(5000),
-        catchError(() => {
-          throw new UnauthorizedException();
-        }),
-      );
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    try {
+      const authentication = this.getAuthentication(context);
+      const response: any = await this.amqpConnection.request({
+        exchange: AUTH_EXCHANGE,
+        routingKey: AUTH_VALIDATE_USER_ROUTING_KEY,
+        payload: {
+          message: {
+            Authentication: authentication,
+          },
+        },
+      });
+
+      if ('error' === response.status) {
+        throw new UnauthorizedException();
+      }
+
+      this.addUser(response, context);
+
+      return true;
+    } catch (error: any) {
+      console.log(error);
+      throw new UnauthorizedException();
+    }
   }
 
   private getAuthentication(context: ExecutionContext) {
     let authentication: string = '';
 
-    if (context.getType() === 'rpc') {
+    if (['rpc', 'rmq'].includes(context.getType())) {
       authentication = context.switchToRpc().getData().Authentication;
     } else if (context.getType() === 'http') {
       const request = context.switchToHttp().getRequest<Request>();
@@ -63,7 +65,7 @@ export class JwtAuthGuard implements CanActivate {
   }
 
   private addUser(user: any, context: ExecutionContext) {
-    if (context.getType() === 'rpc') {
+    if (['rpc', 'rmq'].includes(context.getType())) {
       context.switchToRpc().getData().user = user;
     } else if (context.getType() === 'http') {
       context.switchToHttp().getRequest().user = user;
