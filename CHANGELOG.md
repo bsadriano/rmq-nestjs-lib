@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.2.0
+
+### Minor Changes
+
+- 43deaaf: Adjust RmqModule to use fanout/topic
+
 ## 0.1.3
 
 ### Patch Changes
