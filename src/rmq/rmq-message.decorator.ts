@@ -16,15 +16,20 @@ export function RMQMessage({ exchange, service, cmd, type }: Params): any {
   const routingKey = service + '.cmd.' + cmd;
   const queue = service + '-' + cmd.replace('.', '-').toLowerCase() + '-queue';
 
-  const Handler = type === 'rpc' ? RabbitRPC : RabbitSubscribe;
-
-  return Handler({
+  let Handler = RabbitSubscribe;
+  const options = {
     exchange,
     routingKey: routingKey,
-    queue: queue,
     errorBehavior: MessageHandlerErrorBehavior.ACK,
     errorHandler: ReplyErrorCallback,
-  });
+  } as any;
+
+  if (type === 'rpc') {
+    Handler = RabbitRPC;
+    options.queue = queue;
+  }
+
+  return Handler(options);
 }
 
 export function ReplyErrorCallback(
