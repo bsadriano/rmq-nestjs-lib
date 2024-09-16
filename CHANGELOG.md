@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.2.1
+
+### Patch Changes
+
+- 28702eb: Exclude queue if type is sub
+
 ## 0.2.0
 
 ### Minor Changes
