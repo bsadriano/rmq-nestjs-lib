@@ -1,5 +1,12 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.2.3
+
+### Patch Changes
+
+- aec120d: Rename route
+- d90a96c: Add health exports
+
 ## 0.2.2
 
 ### Patch Changes
