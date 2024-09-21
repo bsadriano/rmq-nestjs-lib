@@ -5,7 +5,7 @@ import {
   HttpHealthIndicator,
 } from '@nestjs/terminus';
 
-@Controller('api/search/health')
+@Controller('health')
 export class HealthController {
   constructor(
     private health: HealthCheckService,
