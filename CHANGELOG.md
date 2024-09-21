@@ -1,5 +1,11 @@
 # @bsadriano/rmq-nestjs-lib
 
+## 0.2.2
+
+### Patch Changes
+
+- 0cd56a9: Add health module
+
 ## 0.2.1
 
 ### Patch Changes
